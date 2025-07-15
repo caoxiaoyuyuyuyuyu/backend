@@ -1,14 +1,20 @@
+<<<<<<< HEAD
 from datetime import datetime
 
+=======
+>>>>>>> af8b0bfa03b4c11c54596924412a05a4a96b6931
 from flask import Blueprint, request, jsonify, current_app
 from typing import List, Dict, Optional
 from app.utils.Redis import ConversationStore
 from app.utils.LLMModel import ChatGLM
 from app.utils.EmbbedingModel import ChatEmbeddings
 from uuid import uuid4
+<<<<<<< HEAD
 
 from app.utils.auth import token_required
 
+=======
+>>>>>>> af8b0bfa03b4c11c54596924412a05a4a96b6931
 chat_bp = Blueprint('chat', __name__, url_prefix='/api/chat')
 
 
@@ -42,10 +48,16 @@ def get_conversation_store():
 
 
 @chat_bp.route('/conversations', methods=['GET'])
+<<<<<<< HEAD
 @token_required
 def get_conversations():
     """Get all conversations for a user"""
     user_id = request.current_user_id
+=======
+def get_conversations():
+    """Get all conversations for a user"""
+    user_id = request.args.get('user_id', type=str)
+>>>>>>> af8b0bfa03b4c11c54596924412a05a4a96b6931
     if not user_id:
         return jsonify({'error': 'user_id is required'}), 400
 
@@ -55,10 +67,16 @@ def get_conversations():
 
 
 @chat_bp.route('/conversation', methods=['GET'])
+<<<<<<< HEAD
 @token_required
 def get_conversation():
     """Get a specific conversation"""
     user_id = request.current_user_id
+=======
+def get_conversation():
+    """Get a specific conversation"""
+    user_id = request.args.get('user_id', type=str)
+>>>>>>> af8b0bfa03b4c11c54596924412a05a4a96b6931
     conversation_id = request.args.get('conversation_id', type=str)
 
     if not user_id or not conversation_id:
@@ -89,7 +107,10 @@ def delete_conversation():
 
 
 @chat_bp.route('/send', methods=['POST'])
+<<<<<<< HEAD
 @token_required
+=======
+>>>>>>> af8b0bfa03b4c11c54596924412a05a4a96b6931
 def send_message():
     """
     Send a message and get response
@@ -102,11 +123,17 @@ def send_message():
     }
     """
     data = request.json
+<<<<<<< HEAD
     user_id = request.current_user_id
     message = data.get('message')
     conversation_id = data.get('conversation_id', str(uuid4()))
     if not conversation_id:
         conversation_id = str(uuid4())
+=======
+    user_id = data.get('user_id')
+    message = data.get('message')
+    conversation_id = data.get('conversation_id', str(uuid4()))
+>>>>>>> af8b0bfa03b4c11c54596924412a05a4a96b6931
     new_conversation = data.get('new_conversation', False)
 
     if not user_id or not message:
@@ -125,8 +152,12 @@ def send_message():
     # Add user message to history
     conversation_history.append({
         'role': 'user',
+<<<<<<< HEAD
         'content': message,
         'timestamp': datetime.now().isoformat(),
+=======
+        'content': message
+>>>>>>> af8b0bfa03b4c11c54596924412a05a4a96b6931
     })
 
     try:
@@ -142,8 +173,12 @@ def send_message():
         # Add assistant response to history
         conversation_history.append({
             'role': 'assistant',
+<<<<<<< HEAD
             'content': response.message.content,
             'timestamp': datetime.now().isoformat(),
+=======
+            'content': response.message.content
+>>>>>>> af8b0bfa03b4c11c54596924412a05a4a96b6931
         })
 
         # Store updated conversation

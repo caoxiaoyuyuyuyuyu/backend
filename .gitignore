@@ -20,7 +20,10 @@ __pycache__/
 *.zip
 *.tar.gz
 *.rar
+<<<<<<< HEAD
 *.pt
+=======
+>>>>>>> af8b0bfa03b4c11c54596924412a05a4a96b6931
 
 # virtual machine crash logs, see http://www.java.com/en/download/help/error_hotspot.xml
 hs_err_pid*
