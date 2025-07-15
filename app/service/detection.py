@@ -31,7 +31,7 @@ class DetectionService:
             pest = None
             if result:
                 if result.get('class_name'):
-                    pest = Pest.query.filter_by(name=result['class_name']).first()
+                    pest = Pest.query.filter_by(cate=result['class_name']).first()
 
             record = DetectionRecord(
                 user_id=user_id,
@@ -56,9 +56,10 @@ class DetectionService:
         :param offset: 偏移量
         :return: 记录列表
         """
-        return DetectionRecord.query.filter_by(user_id=user_id) \
+        records = DetectionRecord.query.filter_by(user_id=user_id) \
             .order_by(DetectionRecord.detection_time.desc()) \
             .offset(offset).limit(limit).all()
+        return [record.to_dict() for record in records]
 
     @staticmethod
     def update_record_status(record_id, status, user_id=None):

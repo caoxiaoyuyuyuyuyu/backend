@@ -66,7 +66,7 @@ class Config:
     # Redis Configuration
     REDIS_HOST = "localhost"
     REDIS_PORT = 6379
-    REDIS_DB = 0
+    REDIS_DB = 2
 
     # 嵌入模型配置
     EMBEDDING_MODEL = os.getenv("EMBEDDING_MODEL", "text-embedding-v3")
@@ -85,4 +85,4 @@ class Config:
     WX_SECRET = '8c5e8f62131f2b877b2e1323bdee5e60'
     JWT_SECRET = 'wxaefe7c5d5c36c81c8c5e8f62131f2b877b2e1323bdee5e60'
 
-    MODEL_PATH = r"D:\Projects\PythonProject\runs\detect\insect_detection_optimized\weights\best.pt"
+    MODEL_PATH = os.path.join(PROJECT_ROOT, 'best.pt')

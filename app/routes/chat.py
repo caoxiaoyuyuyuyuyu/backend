@@ -1,9 +1,14 @@
+from datetime import datetime
+
 from flask import Blueprint, request, jsonify, current_app
 from typing import List, Dict, Optional
 from app.utils.Redis import ConversationStore
 from app.utils.LLMModel import ChatGLM
 from app.utils.EmbbedingModel import ChatEmbeddings
 from uuid import uuid4
+
+from app.utils.auth import token_required
+
 chat_bp = Blueprint('chat', __name__, url_prefix='/api/chat')
 
 
@@ -37,9 +42,10 @@ def get_conversation_store():
 
 
 @chat_bp.route('/conversations', methods=['GET'])
+@token_required
 def get_conversations():
     """Get all conversations for a user"""
-    user_id = request.args.get('user_id', type=str)
+    user_id = request.current_user_id
     if not user_id:
         return jsonify({'error': 'user_id is required'}), 400
 
@@ -49,9 +55,10 @@ def get_conversations():
 
 
 @chat_bp.route('/conversation', methods=['GET'])
+@token_required
 def get_conversation():
     """Get a specific conversation"""
-    user_id = request.args.get('user_id', type=str)
+    user_id = request.current_user_id
     conversation_id = request.args.get('conversation_id', type=str)
 
     if not user_id or not conversation_id:
@@ -82,6 +89,7 @@ def delete_conversation():
 
 
 @chat_bp.route('/send', methods=['POST'])
+@token_required
 def send_message():
     """
     Send a message and get response
@@ -94,9 +102,11 @@ def send_message():
     }
     """
     data = request.json
-    user_id = data.get('user_id')
+    user_id = request.current_user_id
     message = data.get('message')
     conversation_id = data.get('conversation_id', str(uuid4()))
+    if not conversation_id:
+        conversation_id = str(uuid4())
     new_conversation = data.get('new_conversation', False)
 
     if not user_id or not message:
@@ -115,7 +125,8 @@ def send_message():
     # Add user message to history
     conversation_history.append({
         'role': 'user',
-        'content': message
+        'content': message,
+        'timestamp': datetime.now().isoformat(),
     })
 
     try:
@@ -131,7 +142,8 @@ def send_message():
         # Add assistant response to history
         conversation_history.append({
             'role': 'assistant',
-            'content': response.message.content
+            'content': response.message.content,
+            'timestamp': datetime.now().isoformat(),
         })
 
         # Store updated conversation

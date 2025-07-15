@@ -48,6 +48,7 @@ def wechat_login():
     try:
         wx_res = requests.get(wx_url, timeout=5)
         wx_data = wx_res.json()
+        print("wx_data: ", wx_data)
         openid = wx_data.get('openid')
 
         if not openid:
