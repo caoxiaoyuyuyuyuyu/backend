@@ -4,11 +4,7 @@ from typing import List, Dict, Optional
 
 
 class ConversationStore:
-<<<<<<< HEAD
     def __init__(self, host: str = 'localhost', port: int = 6379, db: int = 2):
-=======
-    def __init__(self, host: str = 'localhost', port: int = 6379, db: int = 0):
->>>>>>> af8b0bfa03b4c11c54596924412a05a4a96b6931
         """初始化Redis连接"""
         self.redis_client = redis.Redis(
             host=host,
@@ -39,11 +35,7 @@ class ConversationStore:
             print(f"存储对话历史失败: {e}")
             return False
 
-<<<<<<< HEAD
     def get_user_conversations(self, user_id: str) -> List[Dict]:
-=======
-    def get_user_conversations(self, user_id: str) -> Dict[str, List[Dict]]:
->>>>>>> af8b0bfa03b4c11c54596924412a05a4a96b6931
         """
         获取用户的所有对话历史
         :param user_id: 用户ID
@@ -54,17 +46,10 @@ class ConversationStore:
             # 获取用户的所有对话
             conversations = self.redis_client.hgetall(key)
             # 将JSON字符串转换回Python对象
-<<<<<<< HEAD
             return [{"id": conv_id, "messages": json.loads(messages), "lastTime": json.loads(messages)[-1]["timestamp"]} for conv_id, messages in conversations.items()]
         except Exception as e:
             print(f"获取用户对话历史失败: {e}")
             return []
-=======
-            return {conv_id: json.loads(messages) for conv_id, messages in conversations.items()}
-        except Exception as e:
-            print(f"获取用户对话历史失败: {e}")
-            return {}
->>>>>>> af8b0bfa03b4c11c54596924412a05a4a96b6931
 
     def get_single_conversation(self, user_id: str, conversation_id: str) -> Optional[List[Dict]]:
         """
@@ -103,11 +88,7 @@ if __name__  == '__main__':
     redis_client = ConversationStore()
 
     # 存储对话
-<<<<<<< HEAD
-    user_id = 1
-=======
-    user_id = 'test_user'
->>>>>>> af8b0bfa03b4c11c54596924412a05a4a96b6931
+    user_id = "1"
     conversation_id = 'test_conversation'
     messages = [
         {"role": "user", "content": "hello"},
@@ -115,16 +96,8 @@ if __name__  == '__main__':
         {"role": "user", "content": "How are you?"},
         {"role": "assistant", "content": "I'm doing well, thanks!"}
     ]
-<<<<<<< HEAD
     # redis_client.store_conversation(user_id, conversation_id, messages)
     print(redis_client.get_user_conversations(user_id))
     # print(redis_client.get_single_conversation(user_id, conversation_id))
     # print(redis_client.delete_conversation(user_id, conversation_id))
     # print(redis_client.get_user_conversations(user_id))
-=======
-    redis_client.store_conversation(user_id, conversation_id, messages)
-    print(redis_client.get_user_conversations(user_id))
-    print(redis_client.get_single_conversation(user_id, conversation_id))
-    print(redis_client.delete_conversation(user_id, conversation_id))
-    print(redis_client.get_user_conversations(user_id))
->>>>>>> af8b0bfa03b4c11c54596924412a05a4a96b6931

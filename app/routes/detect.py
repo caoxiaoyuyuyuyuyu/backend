@@ -1,18 +1,11 @@
-<<<<<<< HEAD
 from flask import Blueprint, request, jsonify, current_app, send_from_directory
-=======
-from flask import Blueprint, request, jsonify, current_app
->>>>>>> af8b0bfa03b4c11c54596924412a05a4a96b6931
 from werkzeug.utils import secure_filename
 import os
 from datetime import datetime
 
 from app.models.pest import Pest
 from app.service.detection import DetectionService
-<<<<<<< HEAD
 from app.utils.auth import token_required
-=======
->>>>>>> af8b0bfa03b4c11c54596924412a05a4a96b6931
 from app.utils.detect import detect  # 导入您的检测函数
 
 # 配置
@@ -27,20 +20,14 @@ def allowed_file(filename):
 
 
 @detect_bp.route('/image', methods=['POST'])
-<<<<<<< HEAD
 @token_required
-=======
->>>>>>> af8b0bfa03b4c11c54596924412a05a4a96b6931
 def detect_image():
     """
     图片检测接口
     接收: multipart/form-data 文件上传
     返回: JSON格式的检测结果
     """
-<<<<<<< HEAD
     user_id = request.current_user_id
-=======
->>>>>>> af8b0bfa03b4c11c54596924412a05a4a96b6931
     # 1. 检查文件是否存在
     if 'file' not in request.files:
         return jsonify({'code': 400, 'message': '未上传文件'}), 400
@@ -67,21 +54,12 @@ def detect_image():
             model_path=model_path,
             image_path=filepath,
             output_dir=current_app.config['DETECT_DIR'],
-<<<<<<< HEAD
             user_id=user_id)
 
         # 创建识别记录
         records = DetectionService.create_detection_record(user_id, {
                 'results': results,
                 'image_url': str(user_id) + '/' +filename  # 返回可访问的图片URL
-=======
-            user_id=1)
-
-        # 创建识别记录
-        records = DetectionService.create_detection_record(1, {
-                'results': results,
-                'image_url': f"/detect/{filename}"  # 返回可访问的图片URL
->>>>>>> af8b0bfa03b4c11c54596924412a05a4a96b6931
             })
 
         return jsonify({
@@ -94,7 +72,6 @@ def detect_image():
             'code': 500,
             'message': '检测失败',
             'error': str(e)
-<<<<<<< HEAD
         }), 500
 
 # 检测记录
@@ -114,6 +91,3 @@ def get_detection_records():
 def get_image(image):
     # image 参数将包含类似 '1/20250714143538_1093.jpg' 的路径
     return send_from_directory(current_app.config['DETECT_DIR'], image)
-=======
-        }), 500
->>>>>>> af8b0bfa03b4c11c54596924412a05a4a96b6931

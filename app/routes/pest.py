@@ -64,8 +64,4 @@ def get_pest(pest_id):
 # 获取图片
 @pest_bp.route('/images/<string:image>', methods=['GET'])
 def get_image(image):
-<<<<<<< HEAD
     return send_from_directory(current_app.config['STATIC_DIR'], image)
-=======
-    return send_from_directory(current_app.config['STATIC_DIR'], "logo.png")
->>>>>>> af8b0bfa03b4c11c54596924412a05a4a96b6931
